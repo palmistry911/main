@@ -50,8 +50,15 @@ def create_transaction(account):
     comment = input("Введите название транзакции: ")
     transaction = {"comment": comment, "amount": amount}
     account["transactions"].append(transaction)
-    print("Транзакция создана: " + "\n" + "Название транзакции: " + str(comment) + "\n" + "Сумма транзакции: " + str(
-        amount))
+    print(
+        "Транзакция создана: "
+        + "\n"
+        + "Название транзакции: "
+        + str(comment)
+        + "\n"
+        + "Сумма транзакции: "
+        + str(amount)
+    )
 
 
 def apply_transaction(account):
@@ -69,7 +76,9 @@ def apply_transaction(account):
 def get_expected_payments_statistics(transactions):
     payment_stats = {}
     for transaction in account["transactions"]:
-        payment_stats[transaction["amount"]] = (payment_stats.get(transaction["amount"], 0) + 1)
+        payment_stats[transaction["amount"]] = (
+                payment_stats.get(transaction["amount"], 0) + 1
+        )
     for amount, count in payment_stats.items():
         print(str(amount), "руб:" + str(count), "платеж(а)")
 
@@ -100,6 +109,12 @@ while True:
     print("9.Фильтрация пополнений")
     print("10.Выйти из программы")
 
+    try:
+        operation = int(input("Выберите операцию: "))
+    except ValueError:
+        print("Пожалуйста, введите соответсвующий номер операции из списка.")
+        continue
+
     if operation == 1:
         fio = input("Введите ФИО")
         birth_date = int(input("Введите дату рождения"))
@@ -109,20 +124,25 @@ while True:
         save(account, file_name)
 
     elif operation == 2:
-        increase_balance = int(input("Введите сумму пополнения"))
-        balance += increase_balance
-        print("Счет пополнен")
-        save(account, file_name)
+        try:
+            increase_balance = int(input("Введите сумму пополнения"))
+            balance += increase_balance
+            print("Счет пополнен")
+            save(account, file_name)
+        except ValueError:
+            print("Пожалуйста введите целое число!")
 
     elif operation == 3:
         if input_password():
-            decrease_balance = int(input("Введите сумму снятия: "))
-            if account["balance"] >= decrease_balance:
-                account["balance"] -= decrease_balance
-                print("Снятие прошло успешно.")
-            else:
-                print("На счете недостаточно средств.")
-
+            try:
+                decrease_balance = int(input("Введите сумму снятия: "))
+                if account["balance"] >= decrease_balance:
+                    account["balance"] -= decrease_balance
+                    print("Снятие прошло успешно.")
+                else:
+                    print("На счете недостаточно средств.")
+            except ValueError:
+                print("Введите целое число для суммы снятия.")
 
     elif operation == 4:
         if input_password():
@@ -134,9 +154,12 @@ while True:
         save(account, file_name)
 
     elif operation == 6:
-        limit = int(input("Введите сумму лимита"))
-        print("Лимит измененен на сумму" + str(limit))
-        save(account, file_name)
+        try:
+            limit = int(input("Введите сумму лимита"))
+            print("Лимит измененен на сумму" + str(limit))
+            save(account, file_name)
+        except ValueError:
+            print("Введите целое число")
 
     elif operation == 7:
         apply_transaction(account)
@@ -147,14 +170,18 @@ while True:
         save(account, file_name)
 
     elif operation == 9:
-        threshold = float(input("Введите сумму для фильтрации: "))
-        if threshold < 0:
-            print("Сумма не может быть отрицательной.")
-        else:
-            filtered_transactions = filter_transactions(transactions, threshold)
-            print("Транзакции не меньше введенного числа:")
-            for transactions in filtered_transactions:
-                print(transactions["comment"])
+        try:
+            threshold = float(input("Введите сумму для фильтрации: "))
+            if threshold < 0:
+                print("Сумма не может быть отрицательной.")
+            else:
+                filtered_transactions = filter_transactions(transactions, threshold)
+                print("Транзакции не меньше введенного числа:")
+                for transactions in filtered_transactions:
+                    print(transactions["comment"])
+
+        except ValueError:
+            print("Ошибка: введите числовое значение.")
 
     elif operation == 10:
         print("Всего доброго!")
