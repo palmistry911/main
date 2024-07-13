@@ -50,15 +50,8 @@ def create_transaction(account):
     comment = input("Введите название транзакции: ")
     transaction = {"comment": comment, "amount": amount}
     account["transactions"].append(transaction)
-    print(
-        "Транзакция создана: "
-        + "\n"
-        + "Название транзакции: "
-        + str(comment)
-        + "\n"
-        + "Сумма транзакции: "
-        + str(amount)
-    )
+    print("Транзакция создана: " + "\n" + "Название транзакции: " + str(comment) + "\n" + "Сумма транзакции: " + str(
+        amount))
 
 
 def apply_transaction(account):
@@ -75,10 +68,7 @@ def apply_transaction(account):
 
 def get_expected_payments_statistics(transactions):
     payment_stats = {}
-    for transaction in account["transactions"]:
-        payment_stats[transaction["amount"]] = (
-                payment_stats.get(transaction["amount"], 0) + 1
-        )
+    payment_stats[transaction["amount"]] = (payment_stats.get(transaction["amount"], 0) + 1)
     for amount, count in payment_stats.items():
         print(str(amount), "руб:" + str(count), "платеж(а)")
 
