@@ -68,10 +68,10 @@ def apply_transaction(account):
 
 def get_expected_payments_statistics(transactions):
     payment_stats = {}
-    payment_stats[transaction["amount"]] = (payment_stats.get(transaction["amount"], 0) + 1)
+    for transaction in account["transactions"]:
+        payment_stats[transaction["amount"]] = (payment_stats.get(transaction["amount"], 0) + 1)
     for amount, count in payment_stats.items():
         print(str(amount), "руб:" + str(count), "платеж(а)")
-
 
 def filter_transactions(transactions, threshold):
     for transaction in transactions:
